@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liftoff: Launch to Legacy</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a unique look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for the galaxy background and animations */
+        :root {
+            --primary-purple: #2c1a4b;
+            --accent-purple: #7f52f3;
+            --light-purple: #a58ce3;
+            --star-color: #ffffff;
+        }
+
+        body {
+            background-color: var(--primary-purple);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Hide scrollbars during animation */
+        }
+
+        /* Galaxy star field effect */
+        .galaxy-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle, #3e2865 0%, #1a102c 100%);
+        }
+
+        .galaxy-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            box-shadow:
+                /* Small stars */
+                0 0 1px 1px #fff, 100px 200px 1px 1px #fff, 200px 50px 1px 1px #fff, 300px 300px 1px 1px #fff, 400px 150px 1px 1px #fff, 500px 400px 1px 1px #fff, 600px 100px 1px 1px #fff, 700px 250px 1px 1px #fff,
+                -100px 50px 1px 1px #fff, -200px 300px 1px 1px #fff, -300px 150px 1px 1px #fff, -400px 400px 1px 1px #fff, -500px 200px 1px 1px #fff, -600px 50px 1px 1px #fff,
+                /* Medium stars */
+                100px 500px 1px 1px #fff, 250px 100px 1px 1px #fff, 500px 250px 1px 1px #fff, 750px 50px 1px 1px #fff,
+                -150px 350px 1px 1px #fff, -450px 100px 1px 1px #fff;
+            animation: twinkle 10s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Rocket ship container and image for fullscreen cover */
+        #rocket-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 30; /* Ensure the rocket is above all other content */
+            opacity: 0;
+            visibility: hidden;
+            background-color: var(--primary-purple); /* Background color to hide content behind */
+        }
+        
+        #rocket-img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* This makes the image cover the entire container */
+            max-width: none;
+            max-height: none;
+            filter: drop-shadow(0 0 10px var(--accent-purple));
+        }
+
+        /* Form iframe styling */
+        #registration-form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5); /* Start small and centered */
+            width: 90%;
+            max-width: 800px;
+            height: 90vh;
+            border-radius: 1.5rem;
+            box-shadow: 0 0 40px rgba(127, 82, 243, 0.5); /* Glowing effect */
+            border: 2px solid var(--accent-purple);
+            background-color: rgba(44, 26, 75, 0.9);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 20;
+        }
+
+        /* Heading styling */
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--accent-purple), 0 0 20px rgba(127, 82, 243, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Button styling */
+        #launch-btn {
+            position: relative;
+            z-index: 50;
+            background: linear-gradient(135deg, var(--accent-purple), #5c35c3);
+            border: none;
+            box-shadow: 0 0 20px var(--accent-purple);
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 5px #fff;
+        }
+
+        #launch-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--accent-purple), 0 0 50px rgba(127, 82, 243, 0.5);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen text-white p-4">
+
+    <!-- Galaxy Background -->
+    <div class="galaxy-background"></div>
+
+    <!-- Main Content -->
+    <div id="intro-container" class="relative z-30 text-center flex flex-col items-center justify-center transition-opacity duration-1000 p-8">
+        <!-- Main Graphic: "Logo 01 S.jpg" -->
+        <img src="https://lh4.googleusercontent.com/POJ_wiiplMdebu0ZZGXLFLmMI7vgVoODTs7a3JkXHwWQ4fORmi3tBZuJ1va-Tz8KwhFXXrWU8zSGaR-hIW0eSqCB0MdXIGnapl9bTqJJRwEgYpXp_CqHioW7xryKUhvZVfWTua2kX6A5e5VpCf9xbtAtiA7F_7q7ytz72-cQcreT0-Dn0XTuXg=w1280" 
+             onerror="this.onerror=null;this.src='https://placehold.co/400x150/2c1a4b/ffffff?text=MOON+SHOT+AWARDS'"
+             alt="Moon Shot Awards Logo" class="w-full max-w-xs mx-auto mb-4" />
+
+        <!-- Main Title -->
+        <h1 class="main-title text-xl md:text-2xl font-bold mt-4 mb-2">Liftoff: Launch to Legacy</h1>
+        
+        <!-- Subtitle -->
+        <p class="text-sm md:text-base mb-6">Join us as we celebrate a year of stellar achievements and launch into a legacy of success!</p>
+        
+        <!-- Action Button -->
+        <button id="launch-btn" class="text-xl md:text-2xl font-bold py-4 px-8 rounded-full mb-8">
+            Secure Your Seat
+        </button>
+
+        <!-- Logo below the button: "ATLAS PALM LOGO.jpg" -->
+        <img src="https://lh3.googleusercontent.com/vmkrh4STWopCYFJiisk4BBkGzRKvchAuTKgGjaotljanca9xaSJtip8b6bce7MPlfDnwuILocFiJvssLhr_hUH8D3nh0uwdWxJ_uAgWOFOBqZISkJ4ceOcnZmyL7CLuMo_UerUTX-X4=w1280" 
+             onerror="this.onerror=null;this.src='https://placehold.co/100x100/2c1a4b/ffffff?text=ATLAS+PALM'"
+             alt="Atlas Palm Logo" class="w-20 h-20 mx-auto" />
+    </div>
+
+    <!-- Rocket Ship Container -->
+    <div id="rocket-container">
+        <!-- Using the new rocket image you provided -->
+        <img id="rocket-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" 
+             alt="Rocket Launch" />
+    </div>
+
+    <!-- Google Form iframe -->
+    <!-- Your Google Form is now embedded here -->
+    <iframe id="registration-form" class="hidden" src="https://docs.google.com/forms/d/e/1FAIpQLSfz4Oq840gN2pqZ3I3QqpoASVmUCeX6tkaRyCViTgvz6sD8OQ/viewform?embedded=true"></iframe>
+
+    <!-- GSAP for animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get elements from the DOM
+            const launchBtn = document.getElementById('launch-btn');
+            const introContainer = document.getElementById('intro-container');
+            const rocketContainer = document.getElementById('rocket-container');
+            const registrationForm = document.getElementById('registration-form');
+            const rocketImg = document.getElementById('rocket-img');
+
+            // The URL for the rocket GIF
+            const rocketGifUrl = "https://lh6.googleusercontent.com/PmPnPhvVw6N5IZpvAjQQ8oUB2qV7EiReWCa5rNJnrPdsyL07OCGBURocK9NTmXhe4LDP6erPdNOdfIalZSvw4Zu0XUzptXRODdng3r8P7D7gyZFk0N8v9pbQ8OQhBt0zxiRRGr6qfKczX6CPN2J-kWsnEY0aupdpgPOYLYppe1uoKlczlAZ_=w1280";
+            
+            // Set initial state for rocket container
+            gsap.set(rocketContainer, {
+                opacity: 0,
+                visibility: 'hidden'
+            });
+
+            // Add event listener to the launch button to start the animation
+            launchBtn.addEventListener('click', () => {
+                const timeline = gsap.timeline();
+
+                // 1. Hide the intro content
+                timeline.to(introContainer, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        introContainer.style.display = 'none';
+                    }
+                });
+
+                // 2. Animate the rocket to fade in and cover the screen
+                timeline.to(rocketContainer, {
+                    opacity: 1,
+                    visibility: 'visible',
+                    duration: 1,
+                    ease: "power2.inOut",
+                    onStart: () => {
+                        // Set the GIF source to start playback
+                        rocketImg.src = rocketGifUrl;
+                        // Make sure the rocket container is centered and covers the screen
+                        gsap.set(rocketContainer, {
+                            width: '100vw',
+                            height: '100vh',
+                            top: '0',
+                            left: '0',
+                            x: '0',
+                            y: '0',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        });
+                    }
+                }, ">-0.2"); // Starts before the intro container fully disappears
+
+                // 3. Keep the rocket on screen for a total of ~4s and then fade it out
+                timeline.to(rocketContainer, {
+                    opacity: 0,
+                    duration: 1, // Fade out duration
+                    delay: 3 // Wait for 3 seconds before fading out
+                });
+
+                // 4. Reveal the registration form
+                timeline.to(registrationForm, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1,
+                    ease: "back.out(1.7)",
+                    onStart: () => {
+                        registrationForm.classList.remove('hidden');
+                        registrationForm.style.visibility = 'visible';
+                        document.body.style.overflow = 'auto';
+                    }
+                }, "-=0.5"); // Overlap with the rocket fade out
+            });
+        });
+    </script>
+</body>
+</html>
